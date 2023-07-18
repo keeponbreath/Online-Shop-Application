@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>3.1.0</version>
+	</parent>
+	<groupId>spring.cloud</groupId>
+	<artifactId>spring-cloud</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	<name>spring-cloud</name>
+	<description>Spring Cloud multi-module application</description>
+
+	<modules>
+		<module>eureka-server</module> <!-- 8761 -->
+		<module>gateway</module> <!-- 5555 -->
+		<module>config-server</module> <!-- 8081 -->
+		<module>oauth2-auth-server</module> <!-- 9090 -->
+		<module>item-service</module> <!-- 9091 -->
+		<module>account-service</module> <!-- 9092 -->
+		<module>discount-service</module> <!-- 9093 -->
+		<module>organization-service</module> <!-- 9094 -->
+		<module>comment-service</module> <!-- 9095 -->
+		<module>purchase-service</module> <!-- 9096 -->
+		<module>storage-service</module> <!-- 9097 -->
+	</modules>
+
+	<properties>
+		<java.version>17</java.version>
+		<spring-cloud.version>2022.0.2</spring-cloud.version>
+	</properties>
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-bootstrap</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-dependencies</artifactId>
+				<version>${spring-cloud.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+	
+</project>

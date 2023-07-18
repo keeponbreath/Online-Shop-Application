@@ -1,0 +1,32 @@
+server:
+  port: 9092
+spring:
+  application:
+    name: account-service
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://account-database:5432/ms_accounts
+    #account-database to localhost for non Docker
+    username: postgres
+    password: ruslan
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        show_sql: true
+  rabbitmq:
+    host: rabbitmq
+    port: 5672
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://auth-server:9090
+          #auth-server to localhost for non Docker
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_URI:http://eureka-server:8761/eureka}
+      #eureka-server to localhost for non Docker

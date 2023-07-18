@@ -1,0 +1,45 @@
+server:
+  port: 5555
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      routes:
+        - id: account-service
+          uri: lb://account-service
+          predicates:
+            - Path=/accounts/**
+        - id: comment-service
+          uri: lb://comment-service
+          predicates:
+            - Path=/comments/**
+        - id: discount-service
+          uri: lb://discount-service
+          predicates:
+            - Path=/discounts/**
+        - id: item-service
+          uri: lb://item-service
+          predicates:
+            - Path=/items/**
+        - id: oauth2-auth-server
+          uri: lb://oauth2-auth-server
+          predicates:
+            - Path=/auth/**
+        - id: organization-service
+          uri: lb://organization-service
+          predicates:
+            - Path=/organizations/**
+        - id: purchase-service
+          uri: lb://purchase-service
+          predicates:
+            - Path=/purchases/**
+        - id: storage-service
+          uri: lb://storage-service
+          predicates:
+            - Path=/storages/**
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_URI:http://eureka-server:8761/eureka}
+      #eureka-server to localhost for non Docker

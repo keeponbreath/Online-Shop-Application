@@ -1,0 +1,224 @@
+version: 0.0.1
+services:
+  rabbit:
+    image: rabbitmq:3.12-management-alpine
+    hostname: rabbitmq
+    restart: always
+    ports:
+      - 15672:15672
+      - 5672:5672
+    networks:
+      - spring-cloud-network
+  eureka:
+    build: ./eureka-server
+    image: eureka:lts
+    container_name: eureka-server
+    ports:
+      - 8761:8761
+    restart: always
+    networks:
+      - spring-cloud-network
+  config:
+    build: ./config-server
+    image: config:lts
+    container_name: config-server
+    ports:
+      - 8081:8081
+    restart: always
+    networks:
+      - spring-cloud-network
+  gateway:
+    build: ./gateway
+    image: gateway:lts
+    container_name: gateway
+    ports:
+      - 5555:5555
+    restart: always
+    networks:
+      - spring-cloud-network
+  oauth2:
+    build: ./oauth2-auth-server
+    image: auth.server:lts
+    container_name: auth-server
+    ports:
+      - 9090:9090
+    restart: always
+    depends_on:
+      - auth-database
+    networks:
+      - spring-cloud-network
+  auth-database:
+    image: postgres
+    container_name: auth-database
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ruslan
+      POSTGRES_DB: ms_auth_server
+    ports:
+      - 15000:5432
+    networks:
+      - spring-cloud-network
+  accounts:
+    build: ./account-service
+    image: accounts:lts
+    container_name: account-service
+    ports:
+      - 9092:9092
+    restart: always
+    depends_on:
+      - account-database
+      - config
+    networks:
+      - spring-cloud-network
+  account-database:
+    image: postgres
+    container_name: account-database
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ruslan
+      POSTGRES_DB: ms_accounts
+    ports:
+      - 15001:5432
+    networks:
+      - spring-cloud-network
+  items:
+    build: ./item-service
+    image: items:lts
+    container_name: item-service
+    ports:
+      - 9091:9091
+    restart: always
+    depends_on:
+      - item-database
+      - config
+    networks:
+      - spring-cloud-network
+  item-database:
+    image: postgres
+    container_name: item-database
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ruslan
+      POSTGRES_DB: ms_items
+    ports:
+      - 15002:5432
+    networks:
+      - spring-cloud-network
+  purchases:
+    build: ./purchase-service
+    image: purchases:lts
+    container_name: purchase-service
+    ports:
+      - 9096:9096
+    restart: always
+    depends_on:
+      - purchase-database
+      - config
+    networks:
+      - spring-cloud-network
+  purchase-database:
+    image: postgres
+    container_name: purchase-database
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ruslan
+      POSTGRES_DB: ms_purchases
+    ports:
+      - 15003:5432
+    networks:
+      - spring-cloud-network
+  storages:
+    build: ./storage-service
+    image: storage:lts
+    container_name: storage-service
+    ports:
+      - 9097:9097
+    restart: always
+    depends_on:
+      - storage-database
+      - config
+    networks:
+      - spring-cloud-network
+  storage-database:
+    image: postgres
+    container_name: storage-database
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ruslan
+      POSTGRES_DB: ms_storages
+    ports:
+      - 15004:5432
+    networks:
+      - spring-cloud-network
+  organizations:
+    build: ./organization-service
+    image: organizations:lts
+    container_name: organization-service
+    ports:
+      - 9094:9094
+    restart: always
+    depends_on:
+      - org-database
+      - config
+    networks:
+      - spring-cloud-network
+  org-database:
+    image: postgres
+    container_name: org-database
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ruslan
+      POSTGRES_DB: ms_organizations
+    ports:
+      - 15005:5432
+    networks:
+      - spring-cloud-network
+  discounts:
+    build: ./discount-service
+    image: discounts:lts
+    container_name: discount-service
+    ports:
+      - 9093:9093
+    restart: always
+    depends_on:
+      - discount-database
+      - config
+    networks:
+      - spring-cloud-network
+  discount-database:
+    image: postgres
+    container_name: discount-database
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ruslan
+      POSTGRES_DB: ms_discounts
+    ports:
+      - 15006:5432
+    networks:
+      - spring-cloud-network
+  comments:
+    build: ./comment-service
+    image: comments:lts
+    container_name: comment-service
+    ports:
+      - 9095:9095
+    restart: always
+    depends_on:
+      - comment-database
+      - config
+    networks:
+      - spring-cloud-network
+  comment-database:
+    image: postgres
+    container_name: comment-database
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ruslan
+      POSTGRES_DB: ms_comments
+    ports:
+      - 15007:5432
+    networks:
+      - spring-cloud-network
+networks:
+  spring-cloud-network:
+    driver: bridge

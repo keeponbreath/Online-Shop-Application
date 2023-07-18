@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: organization-service
+  cloud:
+    config:
+      uri: http://config-server:8081
+      #config-server to localhost for non Docker
+      fail-fast: true
